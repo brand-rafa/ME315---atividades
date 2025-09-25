@@ -1,0 +1,179 @@
+---
+title: "Desafio_05"
+author: "Rafaela_B"
+format: html
+editor: visual
+---
+
+## Desafio 05
+
+```{r}
+#| include: false
+#pacotes necessários
+#install.packages("RSQLite")
+library(RSQLite)
+
+db = dbConnect(SQLite(), 'C:/Users/rafae/Downloads/disco.db')
+db
+
+# Para mostrar todas as colunas do banco de dados
+dbListTables(db)
+
+```
+
+O comando **dbGetQuery** consulta o banco de dados, extrai os resultados solicitado e os retorna ao R;
+
+```{r}
+#| echo: true
+album_db <- dbGetQuery(db,'SELECT * FROM albums')
+head(album_db)
+dim(album_db)
+
+```
+
+O comando **SELECT** é o comando mais utilizado em SQL; É, também, um dos comandos mais complexos; Pode ser combinado com uma série de argumentos:
+
+**ORDER BY**: ordernar o resultado;
+
+**DISTINCT**: pesquisar por linhas únicas;
+
+**WHERE**: filtrar linhas;
+
+**LIMIT**: restringir o número de linhas do resultado;
+
+**INNER JOIN/LEFT JOIN**: consultar múltiplas tabelas;
+
+**GROUP BY**: agrupar e aplicar funções para agregação nos grupos;
+
+**HAVING**: filtrar em grupos;
+
+## Seleção de colunas específicas e ordenação de resultados
+
+Selecione as colunas `trackid`, `name`, `composer` e `unitprice`. Ordene o objeto resultante por `unitprice`.
+
+```{r}
+#| echo: true
+sql = 'SELECT trackid, name, composer, unitprice FROM tracks ORDER BY unitprice'
+res = dbGetQuery(db, sql)
+head(res, 5)
+
+```
+
+## **Seleção de Registros Diferentes**
+
+Quais são as cidades de todos os clientes, ordenadas por nome de cidade?
+
+```{r}
+#| echo: true
+sql = 'SELECT city FROM customers ORDER BY city'
+ex3a = dbGetQuery(db, sql)
+head(ex3a)
+dim(ex3a)
+```
+
+```{r}
+#| echo: true
+sql = 'SELECT DISTINCT city FROM customers ORDER BY city'
+ex3b = dbGetQuery(db, sql)
+head(ex3b)
+dim(ex3b)
+```
+
+## Seleção com Condições
+
+Quais são todas as músicas do álbum 1?
+
+```{r}
+#| echo: true
+ex4 = dbGetQuery(db,'SELECT name, albumid FROM tracks WHERE albumid=1')
+head(ex4)
+dim(ex4)
+```
+
+### Seleção com Condições Complexas
+
+Limitando-se a 5 registros, após ordenação por nome, quais são os nomes, ID de álbum e ID de mídia de músicas com mídias de tipo 1 ou 2?
+
+```{r}
+#| echo: true
+sql = paste('SELECT name, albumid, mediatypeid FROM tracks'
+,'WHERE mediatypeid IN (1, 2)'
+,"ORDER BY name", 'LIMIT 5')
+dbGetQuery(db, sql)
+
+```
+
+## Seleção de Seleção
+
+Quais são as músicas e identificadores de faixa e álbum produzidas pelo artista que identificador 12?
+
+```{r}
+#| echo: true
+sql = paste('SELECT trackid, name, albumid FROM tracks'
+,'WHERE albumid IN'
+,'(SELECT albumid FROM albums WHERE artistid==12)')
+
+dbGetQuery(db, sql)
+
+```
+
+## Seleções Complexas
+
+Quais são as faixas cujos nomes começam com qualquer caracter seguido de 'ere' e terminam com qualquer expressão?
+
+```{r}
+#| echo: true
+sql = "SELECT trackid, name FROM tracks WHERE name GLOB '?ere*'"
+dbGetQuery(db, sql)[1:5,]
+
+```
+
+Quais são as faixas cujos nomes possuem algum dígito?
+
+```{r}
+#| echo: true
+sql = "SELECT trackid, name FROM tracks WHERE name GLOB '*[0-9]*'"
+dbGetQuery(db, sql)[1:5,]
+```
+
+## Agregação por Grupos de Variáveis
+
+Quantas faixas por disco?
+
+```{r}
+#| echo: true
+sql = 'SELECT albumid, COUNT(trackid) FROM tracks GROUP BY albumid'
+dbGetQuery(db, sql)[1:5,]
+```
+
+## Agregação por Grupos de Variáveis com Filtro
+
+Quantas faixas por disco para o album 1?
+
+```{r}
+#| echo: true
+sql = paste('SELECT albumid, COUNT(trackid)'
+,'FROM tracks GROUP BY albumid'
+,'HAVING albumid=1')
+dbGetQuery(db, sql)
+```
+
+## INNER JOIN
+
+Quais são os nomes de cada faixa com os respectivos títulos dos álbums?
+
+```{r}
+#| echo: true
+sql = paste('SELECT trackid, name, title FROM tracks'
+,'INNER JOIN albums ON albums.albumid=tracks.albumid')
+dbGetQuery(db, sql)[1:5,]
+
+```
+
+***Funções de Agregação*** *AVG:*
+
+AVG(\[ALL \| DISTINCT\] expressao) calcula a média de todos os valores não-nulos ou dos valores distintos;
+
+*COUNT*: COUNT(\[ALL \| DISTINCT\] expressao) realiza a contagem de todos registros;
+
+*MAX, MIN, SUM* funcionam de maneira análoga às funções anteriores;
