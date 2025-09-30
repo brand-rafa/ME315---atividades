@@ -1,0 +1,113 @@
+---
+title: "Desafio_09"
+author: "RafaelaB"
+format: html
+editor: visual
+---
+
+## Desafio 09
+
+1.  **Para configurar**
+
+```{r}
+library(DBI)
+library(RSQLite)
+library(tidyverse)
+
+# cria ou conecta no banco
+con <- dbConnect(RSQLite::SQLite(), "voos.sqlite3")
+
+setwd("C:/Users/rafae/Downloads")
+```
+
+2.  **Importando .csv "airlines" e "airports" e criando banco de dados**
+
+```{r}
+airlines <- read_csv("airlines.csv")
+airports <- read_csv("airports.csv")
+
+dbWriteTable(con, "airlines", airlines, overwrite = TRUE)
+dbWriteTable(con, "airports", airports, overwrite = TRUE)
+
+```
+
+3.  **Função para ler os dados**
+
+```{r}
+lerDados <- function(input, pos) {
+  # Mensagem de progresso
+  message("Leitura atingiu a linha ", pos)
+  
+  # Filtros
+  aeroportos_filtro <- c("BWI", "MIA", "SEA", "SFO", "JFK")
+  dados_filtrados <- subset(input, 
+                            ORIGIN_AIRPORT %in% aeroportos_filtro | 
+                            DESTINATION_AIRPORT %in% aeroportos_filtro)
+  
+  # Salvar no banco (adicionando aos chunks anteriores)
+  dbWriteTable(con, "flights", dados_filtrados, append = TRUE)
+  
+  # Não retorna nada, só grava
+  invisible(NULL)
+}
+```
+
+4.  **Leitura am chunks**
+
+```{r}
+# Definir as colunas que serão lidas
+col_select <- c("YEAR", "MONTH", "DAY", "AIRLINE", "FLIGHT_NUMBER",
+                "ORIGIN_AIRPORT", "DESTINATION_AIRPORT", "ARRIVAL_DELAY")
+
+# Ler em chunks de 100.000 linhas
+read_csv_chunked(
+  file = "flights.csv.zip",
+  callback = SideEffectChunkCallback$new(lerDados),
+  chunk_size = 100000,
+  col_types = cols_only(
+    YEAR = col_integer(),
+    MONTH = col_integer(),
+    DAY = col_integer(),
+    AIRLINE = col_character(),
+    FLIGHT_NUMBER = col_integer(),
+    ORIGIN_AIRPORT = col_character(),
+    DESTINATION_AIRPORT = col_character(),
+    ARRIVAL_DELAY = col_double()
+  )
+)
+```
+
+5.   **O tempo médio de atraso de chegada por aeroporto de destino, a sigla do aeroporto, o nome completo do aeroporto e o nome completo da companhia aérea**
+
+```{r}
+dbListFields(con, "airports")
+dbListFields(con, "airlines")
+
+
+query <- "
+SELECT 
+    f.DESTINATION_AIRPORT AS destino,
+    ap.AIRPORT AS nome_aeroporto,
+    MIN(al.AIRLINE) AS nome_companhia,
+    AVG(f.ARRIVAL_DELAY) AS atraso_medio
+FROM flights f
+JOIN airports ap
+    ON f.DESTINATION_AIRPORT = ap.IATA_CODE
+JOIN airlines al
+    ON f.AIRLINE = al.IATA_CODE
+GROUP BY f.DESTINATION_AIRPORT, ap.AIRPORT
+ORDER BY atraso_medio DESC;
+"
+
+resultado <- dbGetQuery(con, query)
+print(resultado)
+# Mostrar data e hora da finalização
+message("Execução finalizada em: ", Sys.time())
+```
+
+4.  **Desconectando o banco de dados**
+
+```{r}
+dbDisconnect(con)
+
+```

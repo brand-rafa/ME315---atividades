@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="RafaelaB">
+
+<title>Desafio_09</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="desafio_09_files/libs/clipboard/clipboard.min.js"></script>
+<script src="desafio_09_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="desafio_09_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="desafio_09_files/libs/quarto-html/popper.min.js"></script>
+<script src="desafio_09_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="desafio_09_files/libs/quarto-html/anchor.min.js"></script>
+<link href="desafio_09_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="desafio_09_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="desafio_09_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="desafio_09_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="desafio_09_files/libs/bootstrap/bootstrap-bb462d781dde1847d9e3ccf7736099dd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Desafio_09</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>RafaelaB </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="desafio-09" class="level2">
+<h2 class="anchored" data-anchor-id="desafio-09">Desafio 09</h2>
+<ol type="1">
+<li><strong>Para configurar</strong></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DBI)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(RSQLite)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.1.0     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># cria ou conecta no banco</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>con <span class="ot">&lt;-</span> <span class="fu">dbConnect</span>(RSQLite<span class="sc">::</span><span class="fu">SQLite</span>(), <span class="st">"voos.sqlite3"</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"C:/Users/rafae/Downloads"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li><strong>Importando .csv “airlines” e “airports” e criando banco de dados</strong></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>airlines <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"airlines.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 14 Columns: 2
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (2): IATA_CODE, AIRLINE
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>airports <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"airports.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 322 Columns: 7
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+chr (5): IATA_CODE, AIRPORT, CITY, STATE, COUNTRY
+dbl (2): LATITUDE, LONGITUDE
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con, <span class="st">"airlines"</span>, airlines, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbWriteTable</span>(con, <span class="st">"airports"</span>, airports, <span class="at">overwrite =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li><strong>Função para ler os dados</strong></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>lerDados <span class="ot">&lt;-</span> <span class="cf">function</span>(input, pos) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Mensagem de progresso</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">message</span>(<span class="st">"Leitura atingiu a linha "</span>, pos)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Filtros</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  aeroportos_filtro <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"BWI"</span>, <span class="st">"MIA"</span>, <span class="st">"SEA"</span>, <span class="st">"SFO"</span>, <span class="st">"JFK"</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  dados_filtrados <span class="ot">&lt;-</span> <span class="fu">subset</span>(input, </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>                            ORIGIN_AIRPORT <span class="sc">%in%</span> aeroportos_filtro <span class="sc">|</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>                            DESTINATION_AIRPORT <span class="sc">%in%</span> aeroportos_filtro)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Salvar no banco (adicionando aos chunks anteriores)</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dbWriteTable</span>(con, <span class="st">"flights"</span>, dados_filtrados, <span class="at">append =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Não retorna nada, só grava</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">invisible</span>(<span class="cn">NULL</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="4" type="1">
+<li><strong>Leitura am chunks</strong></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Definir as colunas que serão lidas</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>col_select <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"YEAR"</span>, <span class="st">"MONTH"</span>, <span class="st">"DAY"</span>, <span class="st">"AIRLINE"</span>, <span class="st">"FLIGHT_NUMBER"</span>,</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>                <span class="st">"ORIGIN_AIRPORT"</span>, <span class="st">"DESTINATION_AIRPORT"</span>, <span class="st">"ARRIVAL_DELAY"</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Ler em chunks de 100.000 linhas</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv_chunked</span>(</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"flights.csv.zip"</span>,</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">callback =</span> SideEffectChunkCallback<span class="sc">$</span><span class="fu">new</span>(lerDados),</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">chunk_size =</span> <span class="dv">100000</span>,</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col_types =</span> <span class="fu">cols_only</span>(</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">YEAR =</span> <span class="fu">col_integer</span>(),</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">MONTH =</span> <span class="fu">col_integer</span>(),</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">DAY =</span> <span class="fu">col_integer</span>(),</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">AIRLINE =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">FLIGHT_NUMBER =</span> <span class="fu">col_integer</span>(),</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">ORIGIN_AIRPORT =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">DESTINATION_AIRPORT =</span> <span class="fu">col_character</span>(),</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">ARRIVAL_DELAY =</span> <span class="fu">col_double</span>()</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 100001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 200001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 300001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 400001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 500001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 600001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 700001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 800001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 900001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 1000001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 1100001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 1200001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 1300001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 1400001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 1500001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 1600001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 1700001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 1800001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 1900001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 2000001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 2100001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 2200001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 2300001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 2400001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 2500001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 2600001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 2700001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 2800001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 2900001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 3000001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 3100001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 3200001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 3300001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 3400001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 3500001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 3600001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 3700001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 3800001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 3900001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 4000001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 4100001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 4200001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 4300001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 4400001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 4500001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 4600001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 4700001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 4800001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 4900001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 5000001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 5100001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 5200001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 5300001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 5400001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 5500001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 5600001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 5700001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Leitura atingiu a linha 5800001</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+</div>
+<ol start="5" type="1">
+<li><strong>O tempo médio de atraso de chegada por aeroporto de destino, a sigla do aeroporto, o nome completo do aeroporto e o nome completo da companhia aérea</strong></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListFields</span>(con, <span class="st">"airports"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "IATA_CODE" "AIRPORT"   "CITY"      "STATE"     "COUNTRY"   "LATITUDE" 
+[7] "LONGITUDE"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbListFields</span>(con, <span class="st">"airlines"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "IATA_CODE" "AIRLINE"  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>query <span class="ot">&lt;-</span> <span class="st">"</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT </span></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="st">    f.DESTINATION_AIRPORT AS destino,</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="st">    ap.AIRPORT AS nome_aeroporto,</span></span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a><span class="st">    MIN(al.AIRLINE) AS nome_companhia,</span></span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a><span class="st">    AVG(f.ARRIVAL_DELAY) AS atraso_medio</span></span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a><span class="st">FROM flights f</span></span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN airports ap</span></span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a><span class="st">    ON f.DESTINATION_AIRPORT = ap.IATA_CODE</span></span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a><span class="st">JOIN airlines al</span></span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a><span class="st">    ON f.AIRLINE = al.IATA_CODE</span></span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY f.DESTINATION_AIRPORT, ap.AIRPORT</span></span>
+<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a><span class="st">ORDER BY atraso_medio DESC;</span></span>
+<span id="cb75-14"><a href="#cb75-14" aria-hidden="true" tabindex="-1"></a><span class="st">"</span></span>
+<span id="cb75-15"><a href="#cb75-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-16"><a href="#cb75-16" aria-hidden="true" tabindex="-1"></a>resultado <span class="ot">&lt;-</span> <span class="fu">dbGetQuery</span>(con, query)</span>
+<span id="cb75-17"><a href="#cb75-17" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(resultado)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    destino
+1       MSN
+2       MTJ
+3       MSO
+4       JAC
+5       OTH
+6       ASE
+7       RIC
+8       MYR
+9       HDN
+10      EGE
+11      PSE
+12      BDL
+13      ISP
+14      ECP
+15      TUL
+16      SYR
+17      ORF
+18      STT
+19      BQN
+20      PBI
+21      SUN
+22      IND
+23      ACV
+24      ALB
+25      PVD
+26      JAX
+27      TUS
+28      LIT
+29      BUF
+30      MHT
+31      GRR
+32      HNL
+33      LGA
+34      ROC
+35      FAT
+36      PNS
+37      MMH
+38      GNV
+39      FNT
+40      OKC
+41      COS
+42      BTV
+43      PSC
+44      FLL
+45      STL
+46      DAY
+47      BOS
+48      RDD
+49      RNO
+50      PWM
+51      MFR
+52      RDU
+53      BNA
+54      EUG
+55      DAL
+56      STX
+57      IAH
+58      CMH
+59      JFK
+60      BOI
+61      BZN
+62      SJU
+63      MCO
+64      SFO
+65      BLI
+66      RSW
+67      DEN
+68      RDM
+69      OMA
+70      MCI
+71      MIA
+72      CLE
+73      SMF
+74      DFW
+75      DCA
+76      CHS
+77      PDX
+78      AUS
+79      PIT
+80      GSO
+81      ORD
+82      BHM
+83      GEG
+84      PSP
+85      SDF
+86      KTN
+87      OGG
+88      GSP
+89      OAK
+90      TPA
+91      EWR
+92      MRY
+93      LAX
+94      HOU
+95      PHL
+96      SBA
+97      CEC
+98      EYW
+99      SAV
+100     SBP
+101     BUR
+102     LAS
+103     ACK
+104     SJC
+105     JNU
+106     SLC
+107     SAN
+108     BWI
+109     HYA
+110     ONT
+111     MDW
+112     LGB
+113     MSY
+114     MKE
+115     PHX
+116     SIT
+117     SAT
+118     IAD
+119     CLT
+120     CVG
+121     ANC
+122     ATL
+123     SNA
+124     SEA
+125     DTW
+126     BFL
+127     SMX
+128     MEM
+129     MSP
+130     TLH
+131     KOA
+132     ABQ
+133     SRQ
+134     FAI
+135     MVY
+136     XNA
+137     LIH
+138     BIL
+                                                             nome_aeroporto
+1                                              Dane County Regional Airport
+2                                                 Montrose Regional Airport
+3                                            Missoula International Airport
+4                                                      Jackson Hole Airport
+5                  Southwest Oregon Regional Airport&nbsp;(North Bend Municipal)
+6                                               Aspen-Pitkin County Airport
+7                                            Richmond International Airport
+8                                        Myrtle Beach International Airport
+9                              Yampa Valley Airport&nbsp;(Yampa Valley Regional)
+10                                            Eagle County Regional Airport
+11                                                        Mercedita Airport
+12                                            Bradley International Airport
+13                                            Long Island MacArthur Airport
+14                          Northwest Florida Beaches International Airport
+15                                              Tulsa International Airport
+16                                   Syracuse Hancock International Airport
+17                                            Norfolk International Airport
+18                                                    Cyril E. King Airport
+19                                                 Rafael Hernández Airport
+20                                         Palm Beach International Airport
+21                                                Friedman Memorial Airport
+22                                       Indianapolis International Airport
+23                                                           Arcata Airport
+24                                             Albany International Airport
+25                                     Theodore Francis Green State Airport
+26                                       Jacksonville International Airport
+27                                             Tucson International Airport
+28                  Bill and Hillary Clinton National Airport&nbsp;(Adams Field)
+29                                    Buffalo Niagara International Airport
+30                                       Manchester-Boston Regional Airport
+31                                     Gerald R. Ford International Airport
+32                                           Honolulu International Airport
+33                                  LaGuardia Airport (Marine Air Terminal)
+34                                  Greater Rochester International Airport
+35                                    Fresno Yosemite International Airport
+36  Pensacola International Airport&nbsp;(Pensacola Gulf Coast Regional Airport)
+37                                                 Mammoth Yosemite Airport
+38                                             Gainesville Regional Airport
+39                                             Bishop International Airport
+40                                                Will Rogers World Airport
+41                               City of Colorado Springs Municipal Airport
+42                                         Burlington International Airport
+43                                                       Tri-Cities Airport
+44                          Fort Lauderdale-Hollywood International Airport
+45                         St. Louis International Airport at Lambert Field
+46                                James M. Cox Dayton International Airport
+47                         Gen. Edward Lawrence Logan International Airport
+48                                                Redding Municipal Airport
+49                                         Reno/Tahoe International Airport
+50                                           Portland International Jetport
+51                                       Rogue Valley International Airport
+52                                     Raleigh-Durham International Airport
+53                                          Nashville International Airport
+54                                      Eugene Airport&nbsp;(Mahlon Sweet Field)
+55                                                        Dallas Love Field
+56                                                 Henry E. Rohlsen Airport
+57                                     George Bush Intercontinental Airport
+58                                      Port Columbus International Airport
+59   John F. Kennedy International Airport&nbsp;(New York International Airport)
+60                                       Boise Airport&nbsp;(Boise Air Terminal)
+61       Bozeman Yellowstone International Airport&nbsp;(Gallatin Field Airport)
+62                                   Luis Muñoz Marín International Airport
+63                                            Orlando International Airport
+64                                      San Francisco International Airport
+65                                         Bellingham International Airport
+66                                  Southwest Florida International Airport
+67                                             Denver International Airport
+68                                Redmond Municipal Airport&nbsp;(Roberts Field)
+69                                                          Eppley Airfield
+70                                        Kansas City International Airport
+71                                              Miami International Airport
+72                                  Cleveland Hopkins International Airport
+73                                         Sacramento International Airport
+74                                  Dallas/Fort Worth International Airport
+75                                Ronald Reagan Washington National Airport
+76                          Charleston International Airport/Charleston AFB
+77                                           Portland International Airport
+78                                   Austin-Bergstrom International Airport
+79                                         Pittsburgh International Airport
+80                                     Piedmont Triad International Airport
+81                                     Chicago O'Hare International Airport
+82                           Birmingham-Shuttlesworth International Airport
+83                                            Spokane International Airport
+84                                       Palm Springs International Airport
+85                      Louisville International Airport&nbsp;(Standiford Field)
+86                                          Ketchikan International Airport
+87                                                          Kahului Airport
+88                             Greenville-Spartanburg International Airport
+89                                            Oakland International Airport
+90                                              Tampa International Airport
+91                                     Newark Liberty International Airport
+92                   Monterey Regional Airport&nbsp;(Monterey Peninsula Airport)
+93                                        Los Angeles International Airport
+94                                                 William P. Hobby Airport
+95                                       Philadelphia International Airport
+96                  Santa Barbara Municipal Airport&nbsp;(Santa Barbara Airport)
+97                           Del Norte County Airport&nbsp;(Jack McNamara Field)
+98                                           Key West International Airport
+99                               Savannah/Hilton Head International Airport
+100               San Luis Obispo County Regional Airport&nbsp;(McChesney Field)
+101                            Bob Hope Airport&nbsp;(Hollywood Burbank Airport)
+102                                          McCarran International Airport
+103                                              Nantucket Memorial Airport
+104                         Norman Y. Mineta San José International Airport
+105                                            Juneau International Airport
+106                                    Salt Lake City International Airport
+107                       San Diego International Airport&nbsp;(Lindbergh Field)
+108                              Baltimore-Washington International Airport
+109                                            Barnstable Municipal Airport
+110                                           Ontario International Airport
+111                                    Chicago Midway International Airport
+112                                    Long Beach Airport&nbsp;(Daugherty Field)
+113                       Louis Armstrong New Orleans International Airport
+114                                  General Mitchell International Airport
+115                                Phoenix Sky Harbor International Airport
+116                                           Sitka Rocky Gutierrez Airport
+117                                       San Antonio International Airport
+118                                 Washington Dulles International Airport
+119                                 Charlotte Douglas International Airport
+120                      Cincinnati/Northern Kentucky International Airport
+121                             Ted Stevens Anchorage International Airport
+122                        Hartsfield-Jackson Atlanta International Airport
+123                              John Wayne Airport&nbsp;(Orange County Airport)
+124                                    Seattle-Tacoma International Airport
+125                                            Detroit Metropolitan Airport
+126                                                           Meadows Field
+127                Santa Maria Public Airport&nbsp;(Capt G. Allan Hancock Field)
+128                                           Memphis International Airport
+129                            Minneapolis-Saint Paul International Airport
+130                                       Tallahassee International Airport
+131                                   Kona International Airport at Keahole
+132                                       Albuquerque International Sunport
+133                                Sarasota-Bradenton International Airport
+134                                         Fairbanks International Airport
+135                                               Martha's Vineyard Airport
+136                                     Northwest Arkansas Regional Airport
+137                                                           Lihue Airport
+138                                    Billings Logan International Airport
+                  nome_companhia atraso_medio
+1          United Air Lines Inc.   34.5000000
+2          Skywest Airlines Inc.   22.4482759
+3          Skywest Airlines Inc.   20.6206897
+4           Delta Air Lines Inc.   18.5080214
+5          Skywest Airlines Inc.   17.8326360
+6          Skywest Airlines Inc.   16.9505495
+7   American Eagle Airlines Inc.   16.6800000
+8               Spirit Air Lines   14.8557214
+9          Skywest Airlines Inc.   14.5645161
+10        American Airlines Inc.   13.9955947
+11               JetBlue Airways   12.7907692
+12        American Airlines Inc.   12.5019952
+13        Southwest Airlines Co.   11.8563722
+14        Southwest Airlines Co.   11.7115385
+15        American Airlines Inc.   11.4130435
+16          Delta Air Lines Inc.   11.0142566
+17  American Eagle Airlines Inc.   10.8745716
+18        American Airlines Inc.   10.2870748
+19               JetBlue Airways   10.2789116
+20          Delta Air Lines Inc.    9.9479093
+21         Skywest Airlines Inc.    9.8344371
+22  American Eagle Airlines Inc.    9.8061856
+23         Skywest Airlines Inc.    9.6756117
+24        Southwest Airlines Co.    9.6465984
+25        Southwest Airlines Co.    9.5604756
+26  American Eagle Airlines Inc.    9.4942675
+27          Alaska Airlines Inc.    9.3687316
+28        Southwest Airlines Co.    9.3181818
+29          Delta Air Lines Inc.    9.2437620
+30        Southwest Airlines Co.    9.1314815
+31        Southwest Airlines Co.    9.0268987
+32          Alaska Airlines Inc.    8.9799511
+33        American Airlines Inc.    8.8929448
+34               JetBlue Airways    8.8126411
+35         Skywest Airlines Inc.    8.7585408
+36  American Eagle Airlines Inc.    8.7380457
+37         Skywest Airlines Inc.    8.7175573
+38  American Eagle Airlines Inc.    8.6783217
+39        Southwest Airlines Co.    8.5248092
+40        American Airlines Inc.    8.1138614
+41         Skywest Airlines Inc.    7.9759760
+42               JetBlue Airways    7.9160000
+43         Skywest Airlines Inc.    7.7923810
+44          Alaska Airlines Inc.    7.7461805
+45          Alaska Airlines Inc.    7.7317460
+46        Southwest Airlines Co.    7.6553254
+47          Alaska Airlines Inc.    7.6176471
+48         Skywest Airlines Inc.    7.5694051
+49               JetBlue Airways    7.5155351
+50               JetBlue Airways    7.4151300
+51         Skywest Airlines Inc.    7.3961965
+52          Alaska Airlines Inc.    7.2119936
+53          Alaska Airlines Inc.    7.0790913
+54         Skywest Airlines Inc.    7.0507446
+55        Southwest Airlines Co.    6.9677064
+56        American Airlines Inc.    6.8370787
+57          Alaska Airlines Inc.    6.7860192
+58  American Eagle Airlines Inc.    6.7738191
+59          Alaska Airlines Inc.    6.6994552
+60         Skywest Airlines Inc.    6.6827124
+61         Skywest Airlines Inc.    6.6802721
+62        American Airlines Inc.    6.6572543
+63          Alaska Airlines Inc.    6.5832602
+64          Alaska Airlines Inc.    6.5819585
+65          Alaska Airlines Inc.    6.5668016
+66          Delta Air Lines Inc.    6.5301706
+67          Alaska Airlines Inc.    6.4072575
+68         Skywest Airlines Inc.    6.4061728
+69         Skywest Airlines Inc.    6.3910448
+70          Alaska Airlines Inc.    6.1076012
+71        American Airlines Inc.    5.9050491
+72  American Eagle Airlines Inc.    5.8861365
+73          Alaska Airlines Inc.    5.8280328
+74          Alaska Airlines Inc.    5.7361874
+75          Alaska Airlines Inc.    5.7278049
+76          Alaska Airlines Inc.    5.6847471
+77          Alaska Airlines Inc.    5.6559062
+78          Alaska Airlines Inc.    5.6502676
+79          Delta Air Lines Inc.    5.6477024
+80  American Eagle Airlines Inc.    5.5958904
+81          Alaska Airlines Inc.    5.5487728
+82  American Eagle Airlines Inc.    5.5228700
+83          Alaska Airlines Inc.    5.3900507
+84          Alaska Airlines Inc.    5.3757109
+85        Southwest Airlines Co.    5.3670886
+86          Alaska Airlines Inc.    5.3172783
+87          Alaska Airlines Inc.    5.1455026
+88  American Eagle Airlines Inc.    5.0700809
+89          Alaska Airlines Inc.    4.9511367
+90          Alaska Airlines Inc.    4.8468067
+91          Alaska Airlines Inc.    4.7544029
+92         Skywest Airlines Inc.    4.6781915
+93          Alaska Airlines Inc.    4.6656605
+94               JetBlue Airways    4.6396574
+95          Alaska Airlines Inc.    4.3319209
+96         Skywest Airlines Inc.    4.2811116
+97         Skywest Airlines Inc.    4.2800000
+98  American Eagle Airlines Inc.    4.2242991
+99          Delta Air Lines Inc.    4.2176560
+100        Skywest Airlines Inc.    4.2165354
+101         Alaska Airlines Inc.    3.9843913
+102         Alaska Airlines Inc.    3.9833774
+103              JetBlue Airways    3.9727273
+104         Alaska Airlines Inc.    3.9448709
+105         Alaska Airlines Inc.    3.9295559
+106         Alaska Airlines Inc.    3.8468478
+107         Alaska Airlines Inc.    3.7233304
+108         Alaska Airlines Inc.    3.6028337
+109              JetBlue Airways    3.5555556
+110         Alaska Airlines Inc.    3.4955194
+111       Southwest Airlines Co.    3.4294731
+112              JetBlue Airways    3.3844529
+113         Alaska Airlines Inc.    3.0032605
+114        Skywest Airlines Inc.    2.9971526
+115         Alaska Airlines Inc.    2.9495709
+116         Alaska Airlines Inc.    2.5662651
+117         Alaska Airlines Inc.    2.5061792
+118         Alaska Airlines Inc.    2.4249084
+119       American Airlines Inc.    2.2390980
+120 American Eagle Airlines Inc.    2.1849802
+121         Alaska Airlines Inc.    2.1387354
+122         Alaska Airlines Inc.    2.1317666
+123         Alaska Airlines Inc.    2.0227305
+124         Alaska Airlines Inc.    1.9694715
+125         Alaska Airlines Inc.    1.8298867
+126        Skywest Airlines Inc.    1.6155039
+127        Skywest Airlines Inc.    1.5935961
+128 American Eagle Airlines Inc.    1.5555556
+129         Alaska Airlines Inc.    1.2602811
+130 American Eagle Airlines Inc.    1.2095238
+131         Alaska Airlines Inc.    0.1510622
+132         Alaska Airlines Inc.   -0.3031704
+133              JetBlue Airways   -0.9635258
+134         Alaska Airlines Inc.   -1.6044207
+135              JetBlue Airways   -2.8347107
+136        Skywest Airlines Inc.   -3.2745098
+137         Alaska Airlines Inc.   -3.9279188
+138        Skywest Airlines Inc.   -8.5384615</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar data e hora da finalização</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">message</span>(<span class="st">"Execução finalizada em: "</span>, <span class="fu">Sys.time</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Execução finalizada em: 2025-09-30 11:23:10.776106</code></pre>
+</div>
+</div>
+<ol start="4" type="1">
+<li><strong>Desconectando o banco de dados</strong></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dbDisconnect</span>(con)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
