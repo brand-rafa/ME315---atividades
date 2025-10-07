@@ -1,0 +1,153 @@
+---
+title: "Desafio 11"
+author: "RafaelaB"
+format: html
+editor: visual
+---
+
+## Laboratório/Desafio 11
+
+Usando POLARS
+
+```{r}
+#| echo: false
+Sys.time()
+```
+
+1.  Utilizando o arquivo `renda_adulta.csv` e sabendo que ele não possui cabeçalho, faça a importação do banco de dados utilizando os nomes das colunas conforme apresentado acima e na sequência ali indicada. No momento da importação do arquivo, você deve, também, indicar os tipos de cada uma das colunas. Utilize o fato de que o símbolo `?` representa valores faltantes.
+
+    ```{r}
+
+
+    #install.packages("reticulate")
+    library(reticulate)
+    #py_config()
+
+    #reticulate::py_install("polars")
+    #reticulate::py_install("matplotlib")
+
+    ```
+
+```{python}
+import polars as pl
+import plotly.express as px
+
+colunas = ['age', 'workclass', 'fnlwgt', 'education','education-num','marital-status','occupation', 'relationship', 'race', 'sex', 'capital-gain','capital-loss', 'hours-per-week', 'native-country', 'income']
+
+renda_adulta = pl.read_csv("../Downloads/renda_adulta.csv", has_header = False, new_columns = colunas) 
+
+renda_adulta.head(5)
+```
+
+2.  Apresente os tipos de cada uma das colunas.
+
+```{python}
+print(renda_adulta.schema)
+```
+
+3.  Apresente as dimensões da tabela de dados.
+
+    ```{python}
+    print(renda_adulta.shape)
+    ```
+
+4.  Quantas pessoas recebem acima de \$50.000 e quantas pessoas recebem abaixo deste limiar?
+
+    ```{python}
+    # Contar quantas pessoas ganham acima e abaixo de 50k
+    acima = renda_adulta.filter(pl.col("income") == ">50K").height
+    abaixo = renda_adulta.filter(pl.col("income") == "<=50K").height
+
+    print(f"Pessoas que recebem acima de 50.000: {acima}")
+    print(f"Pessoas que recebem até 50.000: {abaixo}")
+    ```
+
+5.  Crie um objeto chamado `renda_longo`, no qual você transforma as colunas `capital-gain` e `capital-loss` (formato *wide*) para formato longo. Os valores destas variáveis devem ser armazenados numa nova coluna chamada `Valor` e os tipos de valores (*gain* e *loss*) devem ser armazenados numa coluna chamada `tipo`.
+
+    ```{python}
+    renda_longo = renda_adulta.melt(
+        id_vars=[col for col in renda_adulta.columns if col not in ["capital-gain", "capital-loss"]],
+        value_vars=["capital-gain", "capital-loss"],
+        variable_name="tipo",
+        value_name="Valor"
+    )
+
+    print(renda_longo)
+
+    ```
+
+6.  Quais são as médias de horas trabalhadas por classe salarial?
+
+    ```{python}
+    # Média de horas trabalhadas por classe salarial e tipo de emprego
+    emprego = renda_adulta.group_by(["workclass", "income"]).agg(
+        pl.col("hours-per-week").mean().alias("media_horas")
+    )
+
+    # Média de horas trabalhadas por classe salarial
+    media_salarial = renda_adulta.group_by("income").agg(
+        pl.col("hours-per-week").mean().alias("media_horas")
+    )
+
+    print(media_salarial)
+    print(emprego)
+    ```
+
+7.  Se cada linha representa uma pessoa, quantas pessoas foram amostradas em cada profissão?
+
+    ```{python}
+    contagem = renda_adulta.group_by("workclass").agg([
+        pl.count("workclass").alias("Contagem")
+    ])
+
+    print(contagem)
+    ```
+
+8.  Crie um gráfico de barras que apresente o número médio de horas trabalhadas semanalmente em função do nível salarial.
+
+    ```{python}
+
+    import matplotlib.pyplot as plt
+
+    # Agrupar por nível salarial e calcular média de horas
+    media_horas = (
+        renda_adulta.group_by("income")
+        .agg(pl.col("hours-per-week").mean().alias("media_horas"))
+    )
+
+    # Preparar os dados para o Matplotlib
+    x = media_horas["income"].to_list()          # Níveis salariais
+    y = media_horas["media_horas"].to_list()    # Média de horas
+    cores = ["red" if income == "<=50K" else "blue" for income in x]
+
+    # Criar gráfico de barras
+    plt.bar(x, y, color=cores)
+    plt.title("Média de Horas Trabalhadas por Nível Salarial")
+    plt.xlabel("Nível Salarial")
+    plt.ylabel("Média de Horas por Semana")
+    plt.show()
+
+    ```
+
+9.  **Desafio**: existe alguma evidência de discriminação salarial entre gêneros biológicos?
+
+    ```{python}
+    import polars as pl
+
+
+    # Criar uma coluna binária: 1 se salário >50K, 0 caso contrário
+    renda_adulta = renda_adulta.with_columns(
+        (pl.col("income") == ">50K").cast(pl.Int8).alias("high_income")
+    )
+
+    # Agrupar por gênero e calcular proporção de high_income
+    prop_salarial = (
+        renda_adulta.group_by("sex")
+        .agg(pl.col("high_income").mean().alias("prop_maior_50k"))
+    )
+
+    print(prop_salarial)
+
+    ```
+
+Como vemos, há uma proporção maior de homens com salários acima de 50 mil comparado ás mulheres, logo, podemos dizer que há indicios.
